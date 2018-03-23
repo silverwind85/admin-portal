@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: head"></head>
+
+<body>
+
+<div th:replace="/common/header :: menu"/>
+<!--==================================================================================================================-->
+<div th:replace="/common/header :: menu-second"/>
+
+    <main class="container">
+        <div>
+            <a class="btn btn-primary" th:href="@{/products}">powrót</a>
+            <a class="btn btn-primary" th:href="@{/products/}+${product.id}+'/edit'">edycja</a>
+
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <img style="width: 100% " th:src="@{/}+${product.imagePath}" class="img-responsive center-block" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <h3 th:text="${product.name}"></h3>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>Waga: </strong><span th:text="${product.shippingWeight}"></span></p>
+                        <p><strong>Cena: </strong><span th:text="${product.price}"></span> zł</p>
+                        <p><strong>Kategorie: </strong><span> <th:block th:each="category : ${product.categories}">
+                            <th:block th:text="${category.name}">[category name]</th:block><span>, </span>
+
+                        </th:block></span> </p>
+
+                        <p><strong>Ilość: </strong><span th:text="${product.quantity}"></span></p>
+                       <!-- <p><strong>Category: </strong><span th:text="${product.categories}"></span></p>-->
+                    </div>
+                    <div class="col-6">
+
+                    </div>
+                </div>
+
+                <p><Strong>Opis: </Strong><span th:utext="${product.description}"></span></p>
+            </div>
+
+        </div>
+    </main>
+
+
+    
+
+
+
+<div th:replace="/common/header :: js-script"/>
+</body>
+</html>

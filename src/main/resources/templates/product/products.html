@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: head"></head>
+
+<body>
+
+<div th:replace="/common/header :: menu"/>
+<!--==================================================================================================================-->
+<div th:replace="/common/header :: menu-second"/>
+<main class="container">
+
+    <div class="row">
+        <div class="col-8" th:fragment="flash" th:if="${flash != null}" >
+            <div class="col-8 alert alert-success" style="font-size:16px; padding: .5rem 1rem" th:classappend="${#strings.toLowerCase(flash.status)}" th:text="${flash.message}" ></div>
+        </div>
+        <div class="table-responsive">
+            <table id="productListTable" class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <th><input th:id="selectAllProducts" type="checkbox"/></th>
+                    <th>Nazwa</th>
+                    <th>Cena</th>
+                    <th>Kategoria</th>
+                    <th>Opis</th>
+                    <th>Waga</th>
+                    <th>Ilość</th>
+                    <th>Operacje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="product : ${products}">
+                    <td>
+                        <input hidden="hidden" name="id" th:value="${product.id}" />
+                        <input th:id="'selected'+${product.id}" class="checkboxProduct" type="checkbox" />
+                    </td>
+                    <td><a th:href="@{/products/} +${product.id}"><span th:text="${product.name}"></span></a></td>
+                    <td th:text="${product.price}"></td>
+                    <td>
+                        <th:block th:each="category : ${product.categories}">
+                            <th:block th:text="${category.name}">[category name]</th:block>
+                            <br/>
+                        </th:block>
+                    </td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.shippingWeight}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td><input hidden="hidden" name="id" th:value="${product.id}" />
+                    <button th:id="oneProduct-+${product.id}" class="btn btn-danger btn-sm delete-product" type="submit" value="delete">
+                    <span class="fa fa-times">Usuń</span></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button th:id="deleteSelected" class="btn btn-danger">Usuń wybrane</button>
+    </div>
+</main>
+
+<div th:replace="/common/header :: js-script"/>
+<script>
+    $(document).ready(function () {
+        $('#productListTable').DataTable({
+            language: {
+            "processing":     "Przetwarzanie...",
+            "search":         "Szukaj:",
+            "lengthMenu":     "Pokaż _MENU_ pozycji",
+            "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+            "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+            "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+            "infoPostFix":    "",
+            "loadingRecords": "Wczytywanie...",
+            "zeroRecords":    "Nie znaleziono pasujących pozycji",
+            "emptyTable":     "Brak danych",
+            "paginate": {
+            "first":      "Pierwsza",
+                "previous":   "Poprzednia",
+                "next":       "Następna",
+                "last":       "Ostatnia"
+        },
+            "aria": {
+            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+        }
+        },
+
+            "lengthMenu": [[10,20,30.-1],[10,20,30,"All"]],
+            "ordering":false,
+            stateSave: true
+        });
+    });
+</script>
+</body>
+</html>
